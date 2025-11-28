@@ -22,3 +22,8 @@ jobs:
         with:
           root_dir: . #carpeta actual
           file_path: secure-code.zip
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: secure-code-artifact
+          path: secure-code.zip
