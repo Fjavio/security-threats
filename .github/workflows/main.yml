@@ -7,14 +7,16 @@ jobs:
       - uses: actions/checkout@master #action scarica il repository nel runner in modo che Snyk possa analizzare il codice
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
-        continue-on-error: true #se Snyk trova vulnerabilità, il job non si blocca: utile perché vuoi comunque caricare il file SARIF su GitHub
+        #eliminamos para el ejercicio opcional
+        #continue-on-error: true #se Snyk trova vulnerabilità, il job non si blocca: utile perché vuoi comunque caricare il file SARIF su GitHub
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: test
-          args: --sarif-file-output=snyk.sarif --all-projects #genera file SARIF con tutti i progetti presenti nel repository, compatibile con GitHub Code Scanning
+          args: --sarif-file-output=snyk.sarif --all-projects #genera file SARIF con tutti i progetti presenti nel repository
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
+        if: always() #sin continue-on-error
         with:
           sarif_file: snyk.sarif
       - name: Create zip of Secure Code
